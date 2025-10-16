@@ -7,7 +7,7 @@ interface Variation {
   data: string;
   mimeType: string;
   index: number;
-  type?: 'text-only' | 'edit' | 'generate';
+  type?: 'text-only' | 'edit' | 'generate' | 'combined';
 }
 
 const ImageEditor = () => {
