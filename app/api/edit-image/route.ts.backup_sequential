@@ -4,7 +4,7 @@ export async function POST(request: NextRequest) {
   try {
     console.log('=== API Route Start ===');
     
-    const { image, prompt, mode, textPrompt, imageCount, temperature } = await request.json();
+    const { image, prompt, mode, textPrompt, imageCount } = await request.json();
     
     // モード別の入力検証
     if (mode === 'edit') {
@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
     let requestBody: any = {
       model: "google/gemini-2.5-flash-image-preview",
       modalities: ["image", "text"],
-      temperature: temperature || 0.7
+      temperature: 0.7
     };
 
     if (mode === 'edit') {
@@ -81,7 +81,7 @@ export async function POST(request: NextRequest) {
 • インペインティングで削除領域を自然に補完
 • 背後の商品表面/背景を推測して復元
 • 3D形状に沿った自然な仕上がり
-• ${imageCount || 3}枚の個別画像として生成（それぞれ完全に独立した画像として、異なる処理で）`
+• ${imageCount || 3}つの独立した高品質画像を生成（1枚に複数シーンを含めない）`
             },
             { 
               type: 'image_url', 
@@ -96,7 +96,7 @@ export async function POST(request: NextRequest) {
           content: [
             { 
               type: 'text', 
-              text: `この画像を「${prompt}」という指示で編集してください。${imageCount || 3}つの完全に異なるバリエーションで高品質な画像を生成してください。重要：各バリエーションは独自のアプローチで、1つ目は基本的な編集、2つ目は異なる解釈、3つ目は創造的な別アプローチで作成してください。広告用途に適しており、指示を忠実に反映したものにしてください。各画像は独立した1つのシーンのみを含み、複数のシーンを1つの画像にまとめないでください。`
+              text: `この画像を「${prompt}」という指示で編集してください。${imageCount || 3}つの異なるバリエーションで高品質な画像を生成してください。広告用途に適しており、指示を忠実に反映したものにしてください。各画像は独立した1つのシーンのみを含み、複数のシーンを1つの画像にまとめないでください。`
             },
             { 
               type: 'image_url', 
@@ -127,7 +127,7 @@ export async function POST(request: NextRequest) {
         content: [
           { 
             type: 'text', 
-            text: `「${textPrompt}」という内容の画像を${imageCount || 3}枚生成してください。高品質で創造的で魅力的な画像にしてください。重要：各画像は完全に異なる独創的なアプローチで作成し、似た画像を作らないでください。1枚目は基本的な解釈、2枚目は異なるスタイルや構図、3枚目は全く違う創造的な視点で生成してください。各画像は独立した1つのシーンのみを含み、複数のシーンを1つの画像にまとめないでください。`
+            text: `「${textPrompt}」という内容の画像を${imageCount || 3}枚生成してください。高品質で創造的で魅力的な画像にしてください。各画像は異なるアプローチや視点で作成してください。各画像は独立した1つのシーンのみを含み、複数のシーンを1つの画像にまとめないでください。`
           }
         ]
       }];
